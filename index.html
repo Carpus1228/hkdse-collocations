@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HKDSE Collocation Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .question {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        .question:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            border-radius: 2px;
+        }
+        .instruction {
+            text-align: center;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .instruction h2 {
+            color: #e74c3c;
+            font-size: 1.8em;
+            margin: 0;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid #e8e8e8;
+            background-color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        #nextBtn {
+            margin: 20px auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        #nextBtn:hover {
+            background: linear-gradient(45deg, #45a049, #4CAF50);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        #word {
+            color: #34495e;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <h1>Collocation Test</h1>
+    <div class="instruction">
+        <h2 style="color: #e74c3c; margin: 0;">Choose the WRONG one!</h2>
+        <p>請選擇不正確的搭配</p>
+    </div>
+    <div id="quiz">
+        <div class="question">
+            <h2 id="word"></h2>
+            <div class="options" id="options"></div>
+        </div>
+        <div id="result"></div>
+        <button id="nextBtn">下一題</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                word: "effect (影響)",
+                options: ["underestimate", "maximize", "disregard", "celebrate"],
+                correct: ["celebrate"]
+            },
+            {
+                word: "emphasis (強調)",
+                options: ["put", "place", "lay", "write"],
+                correct: ["write"]
+            },
+            {
+                word: "enthusiasm (熱誠)",
+                options: ["arouse", "show", "dampen", "paint"],
+                correct: ["paint"]
+            },
+            {
+                word: "example (例子)",
+                options: ["take", "give", "set", "cook"],
+                correct: ["cook"]
+            },
+            {
+                word: "environment (環境)",
+                options: ["destroy", "preserve", "pollute", "sing"],
+                correct: ["sing"]
+            },
+            {
+                word: "examination (考試)",
+                options: ["take", "sit", "prepare for", "dance"],
+                correct: ["dance"]
+            },
+            {
+                word: "failure (失敗)",
+                options: ["admit", "fear", "end in", "enjoy"],
+                correct: ["enjoy"]
+            },
+            {
+                word: "fact (事實)",
+                options: ["establish", "recognize", "conceal", "eat"],
+                correct: ["eat"]
+            },
+            {
+                word: "fashion (流行時尚)",
+                options: ["come into", "go out of", "follow", "drink"],
+                correct: ["drink"]
+            },
+            {
+                word: "fear (恐懼)",
+                options: ["overcome", "conquer", "dispel", "celebrate"],
+                correct: ["celebrate"]
+            },
+            {
+                word: "freedom (自由)",
+                options: ["enjoy", "achieve", "maintain", "paint"],
+                correct: ["paint"]
+            },
+            {
+                word: "friendship (友誼)",
+                options: ["cultivate", "develop", "maintain", "cook"],
+                correct: ["cook"]
+            },
+            {
+                word: "growth (成長)",
+                options: ["promote", "stimulate", "sustain", "throw"],
+                correct: ["throw"]
+            },
+            {
+                word: "government (政府)",
+                options: ["form", "elect", "topple", "drink"],
+                correct: ["drink"]
+            },
+            {
+                word: "habit (習慣)",
+                options: ["develop", "change", "kick", "eat"],
+                correct: ["eat"]
+            },
+            {
+                word: "health (健康)",
+                options: ["improve", "maintain", "restore", "paint"],
+                correct: ["paint"]
+            },
+            {
+                word: "help (幫助)",
+                options: ["seek", "provide", "render", "dance"],
+                correct: ["dance"]
+            },
+            {
+                word: "idea (意念)",
+                options: ["propose", "consider", "advocate", "throw"],
+                correct: ["throw"]
+            },
+            {
+                word: "importance (重要)",
+                options: ["attach", "stress", "emphasize", "sing"],
+                correct: ["sing"]
+            },
+            {
+                word: "impression (印象)",
+                options: ["give", "leave", "create", "eat"],
+                correct: ["eat"]
+            },
+            {
+                word: "improvement (改善)",
+                options: ["make", "achieve", "seek", "drink"],
+                correct: ["drink"]
+            },
+            {
+                word: "income (收入)",
+                options: ["earn", "generate", "boost", "paint"],
+                correct: ["paint"]
+            },
+            {
+                word: "industry (工業)",
+                options: ["develop", "stimulate", "protect", "sing"],
+                correct: ["sing"]
+            },
+            {
+                word: "influence (影響)",
+                options: ["exert", "wield", "show", "cook"],
+                correct: ["cook"]
+            },
+            {
+                word: "information (資訊)",
+                options: ["gather", "provide", "disclose", "dance"],
+                correct: ["dance"]
+            },
+            {
+                word: "interest (興趣)",
+                options: ["attract", "arouse", "cultivate", "throw"],
+                correct: ["throw"]
+            },
+            {
+                word: "instruction (指示)",
+                options: ["follow", "provide", "comply with", "eat"],
+                correct: ["eat"]
+            },
+            {
+                word: "issue (事項)",
+                options: ["address", "tackle", "settle", "drink"],
+                correct: ["drink"]
+            },
+            {
+                word: "job (工作)",
+                options: ["get", "look for", "safeguard", "paint"],
+                correct: ["paint"]
+            },
+            {
+                word: "journey (旅程)",
+                options: ["start", "embark on", "have", "cook"],
+                correct: ["cook"]
+            },
+            {
+                word: "knowledge (知識)",
+                options: ["acquire", "impart", "pursue", "dance"],
+                correct: ["dance"]
+            },
+            {
+                word: "language (語言)",
+                options: ["learn", "master", "speak", "throw"],
+                correct: ["throw"]
+            },
+            {
+                word: "law (法律)",
+                options: ["enforce", "comply with", "violate", "sing"],
+                correct: ["sing"]
+            },
+            {
+                word: "life (生活)",
+                options: ["lead", "enjoy", "cherish", "paint"],
+                correct: ["paint"]
+            },
+            {
+                word: "market (市場)",
+                options: ["penetrate", "capture", "monopolize", "drink"],
+                correct: ["drink"]
+            },
+            {
+                word: "ability (能力)",
+                options: ["cultivate", "enhance", "possess", "cook"],
+                correct: ["cook"]
+            },
+            {
+                word: "acceptance (接納)",
+                options: ["gain", "win", "seek", "dance"],
+                correct: ["dance"]
+            },
+            {
+                word: "advice (建議)",
+                options: ["give", "take", "seek", "throw"],
+                correct: ["throw"]
+            },
+            {
+                word: "ambition (抱負)",
+                options: ["achieve", "realize", "pursue", "sing"],
+                correct: ["sing"]
+            },
+            {
+                word: "argument (爭論)",
+                options: ["have", "settle", "refute", "eat"],
+                correct: ["eat"]
+            },
+            {
+                word: "attack (攻擊)",
+                options: ["launch", "come under", "withstand", "paint"],
+                correct: ["paint"]
+            },
+            {
+                word: "attention (留心)",
+                options: ["pay", "draw", "attract", "cook"],
+                correct: ["cook"]
+            },
+            {
+                word: "attitude (態度)",
+                options: ["adopt", "display", "change", "drink"],
+                correct: ["drink"]
+            },
+            {
+                word: "award (獎項)",
+                options: ["receive", "win", "present", "dance"],
+                correct: ["dance"]
+            },
+            {
+                word: "awareness (意識)",
+                options: ["raise", "heighten", "promote", "throw"],
+                correct: ["throw"]
+            },
+            {
+                word: "assistance (援助)",
+                options: ["offer", "provide", "render", "sing"],
+                correct: ["sing"]
+            },
+            {
+                word: "audience (觀眾)",
+                options: ["attract", "captivate", "reach", "eat"],
+                correct: ["eat"]
+            },
+            {
+                word: "balance (平衡)",
+                options: ["strike", "maintain", "achieve", "paint"],
+                correct: ["paint"]
+            },
+            {
+                word: "belief (信念)",
+                options: ["hold", "share", "foster", "cook"],
+                correct: ["cook"]
+            },
+            {
+                word: "benefit (好處)",
+                options: ["gain", "provide", "reap", "dance"],
+                correct: ["dance"]
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function displayQuestion() {
+            const question = questions[currentQuestion];
+            document.getElementById('word').textContent = question.word;
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                optionsContainer.appendChild(button);
+            });
+            
+            document.getElementById('result').textContent = '';
+        }
+
+        function checkAnswer(selected) {
+            const question = questions[currentQuestion];
+            const isCorrect = question.correct.includes(selected);
+            const resultDiv = document.getElementById('result');
+            
+            if (isCorrect) {
+                resultDiv.textContent = '正確！這個搭配確實不適合。';
+                resultDiv.style.color = 'green';
+            } else {
+                resultDiv.textContent = '錯誤！這是正確的搭配。';
+                resultDiv.style.color = 'red';
+            }
+        }
+
+        document.getElementById('nextBtn').onclick = () => {
+            currentQuestion = (currentQuestion + 1) % questions.length;
+            displayQuestion();
+        };
+
+        // 初始显示第一题
+        displayQuestion();
+    </script>
+</body>
+</html>
